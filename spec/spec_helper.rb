@@ -4,7 +4,7 @@ require File.expand_path File.join('../../tubemp.rb'), __FILE__
 
 module RSpecMixin
   include Rack::Test::Methods
-  def app() Sintra::Application end
+  def app() Sinatra::Application end
 end
 
-Rspec.configure { |c| c.include RSpecMixin }
+RSpec.configure { |c| c.include RSpecMixin }
