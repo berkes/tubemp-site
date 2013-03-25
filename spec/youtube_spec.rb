@@ -65,6 +65,13 @@ describe YouTube do
         File.exists?(filename)
       end
     end # context "valid ID"
-
   end
+
+  describe "#title" do
+    it "should render a title" do
+      @yt.stub(:parse) { @title = "TEST" }
+      @yt.title.should eq "TEST"
+    end
+  end
+
 end

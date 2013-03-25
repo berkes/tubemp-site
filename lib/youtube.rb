@@ -1,9 +1,16 @@
 require 'RMagick'
+require 'video_info'
 require 'net/http'
 
 class YouTube
   def initialize id
     @id = id
+
+    @title = nil
+  end
+
+  def title
+    @title || parse
   end
 
   def img_tag overlay = false
@@ -17,7 +24,15 @@ class YouTube
   end
 
   def parse
-    img = Net::HTTP.get("i.ytimg.com", "/vi/#{@id}/0.jpg")
+    meta = VideoInfo.get("http://www.youtube.com/watch?v=#{@id}")
+
+    @title = meta.title
+
+    get_thumbs meta
+  end
+
+  def get_thumbs meta
+    img = Net::HTTP.get(URI(meta.thumbnail_large))
 
     tmpfile = Tempfile.new(["tubemp", ".jpg"])
     begin
@@ -35,6 +50,7 @@ class YouTube
       images = nil
       tmpfile.unlink
     end
+
   end
 
   # Creates a path to the thumbnail

@@ -7,7 +7,7 @@ get '/:id' do
   yt = YouTube.new params[:id]
 
   image_tags = [yt.img_tag, yt.img_tag(true)]
-  title      = "title here"
+  title      = yt.title
 
   erb :index, :locals => {:image_tags => image_tags, :title => title}
 end
