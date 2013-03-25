@@ -74,6 +74,6 @@ __END__
 <% tags.each do |tag| %>
   <div class="large-6 columns">
     <%= tag %><br />
-    <input type="text" disabled="disabled" value="<%= html_escape tag %>" />
+    <input type="text" value="<%= html_escape tag %>" />
   </div>
 <% end %>
