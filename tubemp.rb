@@ -6,10 +6,7 @@ include ERB::Util
 get '/:id' do
   yt = YouTube.new params[:id]
 
-  image_tags = [yt.img_tag, yt.img_tag(true)]
-  title      = yt.title
-
-  erb :index, :locals => {:image_tags => image_tags, :title => title}
+  erb :index, :locals => {:tags => yt.tags, :title => yt.title}
 end
 
 __END__
@@ -74,9 +71,9 @@ __END__
 </html>
 
 @@ index
-<% image_tags.each do |image_tag| %>
+<% tags.each do |tag| %>
   <div class="large-6 columns">
-    <%= image_tag %><br />
-    <input type="text" disabled="disabled" value="<%= html_escape image_tag %>" />
+    <%= tag %><br />
+    <input type="text" disabled="disabled" value="<%= html_escape tag %>" />
   </div>
 <% end %>

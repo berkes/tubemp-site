@@ -5,34 +5,26 @@ require 'net/http'
 class YouTube
   def initialize id
     @id = id
-
-    @title = nil
+    @meta = nil
   end
 
   def title
-    @title || parse
+    parse
+    @meta.title
   end
 
-  def img_tag overlay = false
-    %Q{<img src="#{thumb(overlay)}" alt=""/>}
+  def tags
+    parse
+    get_thumbs.map {|t| %Q{<img src="#{t}" alt=""/>} }
   end
 
   private
-  def thumb overlay
-    parse
-    thumbname({:overlay => overlay, :omit_public => true})
-  end
-
   def parse
-    meta = VideoInfo.get("http://www.youtube.com/watch?v=#{@id}")
-
-    @title = meta.title
-
-    get_thumbs meta
+    @meta ||= VideoInfo.get("http://www.youtube.com/watch?v=#{@id}")
   end
 
-  def get_thumbs meta
-    img = Net::HTTP.get(URI(meta.thumbnail_large))
+  def get_thumbs
+    img = Net::HTTP.get(URI(@meta.thumbnail_large))
 
     tmpfile = Tempfile.new(["tubemp", ".jpg"])
     begin
@@ -51,6 +43,8 @@ class YouTube
       tmpfile.unlink
     end
 
+    [ thumbname({:overlay => false, :omit_public => true}),
+      thumbname({:overlay => true, :omit_public => true}) ]
   end
 
   # Creates a path to the thumbnail
