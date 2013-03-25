@@ -7,6 +7,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    rmagick (2.13.2)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -28,6 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   rack-test
+  rmagick (~> 2.13)
   rspec (~> 2.13)
   shotgun
   sinatra (~> 1.4)
