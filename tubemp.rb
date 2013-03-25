@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), 'lib', 'youtube')
 include ERB::Util
 
 get '/:id' do
-  yt = YouTube.new params[:id]
+  yt = YouTube.new params[:id], {:base_url => request.base_url }
 
   erb :index, :locals => {:tags => yt.tags, :title => yt.title}
 end

@@ -3,9 +3,11 @@ require 'video_info'
 require 'net/http'
 
 class YouTube
-  def initialize id
+  def initialize id, opts = {}
     @id = id
     @meta = nil
+
+    @base_url = opts[:base_url] || ''
   end
 
   def title
@@ -43,8 +45,8 @@ class YouTube
       tmpfile.unlink
     end
 
-    [ thumbname({:overlay => false, :omit_public => true}),
-      thumbname({:overlay => true, :omit_public => true}) ]
+    [ thumbname({:overlay => false, :absolute => true}),
+      thumbname({:overlay => true, :absolute  => true}) ]
   end
 
   # Creates a path to the thumbnail
@@ -57,7 +59,12 @@ class YouTube
 
     filename = opts[:overlay] ? "#{@id}_overlay": @id
     parts = ["thumbs", "#{filename}.png"]
-    parts.unshift("public") unless opts[:omit_public]
+
+    if opts[:absolute]
+      parts.unshift(@base_url)
+    else
+      parts.unshift("public")
+    end
     File.join(parts)
   end
 end

@@ -9,7 +9,7 @@ describe YouTube do
     VideoInfo.stub(:get).and_return info
 
     @id = "D80QdsFWdcQ"
-    @yt = YouTube.new @id
+    @yt = YouTube.new @id, {:base_url => "http://example.com"}
     @filename = File.join("public", "thumbs", "#{@id}.png")
   end
 
@@ -29,6 +29,12 @@ describe YouTube do
         img = @yt.tags[1].match IMAGE_RE
         src = img[1]
         src.should =~ /#{@id}_overlay\.png/
+      end
+
+      it 'should link to an absolute URL' do
+        img = @yt.tags[0].match IMAGE_RE
+        src = img[1]
+        src.should match /^http:\/\/.*$/
       end
 
       context 'local image does not exist' do
