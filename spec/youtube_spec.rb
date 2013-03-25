@@ -37,6 +37,10 @@ describe YouTube do
         src.should match /^http:\/\/.*$/
       end
 
+      it 'should have the title as alt attribute' do
+        @yt.tags[0].match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
+      end
+
       context 'local image does not exist' do
         before do
           File.delete @filename if File.exists? @filename

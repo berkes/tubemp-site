@@ -17,7 +17,7 @@ class YouTube
 
   def tags
     parse
-    get_thumbs.map {|t| %Q{<img src="#{t}" alt=""/>} }
+    get_thumbs.map {|t| %Q{<img src="#{t}" alt="#{title}"/>} }
   end
 
   private
