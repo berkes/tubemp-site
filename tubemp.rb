@@ -3,10 +3,14 @@ require File.join(File.dirname(__FILE__), 'lib', 'youtube')
 
 include ERB::Util
 
-get '/:id' do
-  yt = YouTube.new params[:id], {:base_url => request.base_url }
+get '/tags' do
+  yt = YouTube.new params[:v], {:base_url => request.base_url }
 
-  erb :index, :locals => {:tags => yt.tags, :title => yt.title}
+  erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
+end
+
+get '/' do
+  erb :index, :locals => { :title => "Create bug-free embed code" }
 end
 
 __END__
@@ -27,7 +31,7 @@ __END__
 
 	<div class="row">
 		<div class="large-4 large-centered columns">
-      <img src="img/logo.png" alt="tubemp logo" title="tubemp" class="logo" id="name" />
+      <a href="/"><img src="img/logo.png" alt="tubemp logo" title="tubemp" class="logo" id="name" /></a>
 		</div>
 		<div class="large-6 large-centered columns">
       <h2 class="subheader"><small>Nuke all the privacy-bugs from youtube embeds</small></h2>
@@ -35,11 +39,11 @@ __END__
 	</div>
 
 	<div class="row">
-			<hr />
-		<div class="large-12 columns">
-			<h2><%= title %></h2>
-      <%= yield %>
-		</div>
+    <div class="large-12 columns">
+      <hr />
+      <h2><%= title %></h2>
+    </div>
+    <%= yield %>
 	</div>
 
   <script>
@@ -71,9 +75,26 @@ __END__
 </html>
 
 @@ index
+<div class="large-12 columns">
+  <form method="get" action="/tags">
+    <div class="row collapse">
+      <div class="large-10 columns">
+        <input type="text" name="v" placeholder="Youtube URL, ID, or embed-code">
+      </div>
+      <div class="large-2 columns">
+        <input type="submit" class="button prefix" value="Remove the bugs" />
+      </div>
+    </div>
+  </form>
+</div>
+
+@@ tags
 <% tags.each do |tag| %>
   <div class="large-6 columns">
     <%= tag %><br />
     <input type="text" value="<%= html_escape tag %>" />
   </div>
 <% end %>
+<div class="large-12 columns">
+  <a href="/">Create another one</a>
+</div>
