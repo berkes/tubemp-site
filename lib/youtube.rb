@@ -1,28 +1,41 @@
 require 'RMagick'
+require 'video_info'
 require 'net/http'
 
 class YouTube
-  def initialize id
+  def initialize id, opts = {}
     @id = id
+    @meta = nil
+
+    @base_url = opts[:base_url] || ''
   end
 
-  def img_tag overlay = false
-    %Q{<img src="#{thumb(overlay)}" alt=""/>}
+  def title
+    parse
+    @meta.title
+  end
+
+  def href
+    "http://www.youtube.com/watch?v=#{@id}"
+  end
+
+  def tags
+    parse
+    get_thumbs.map {|t| %Q{<a href="#{href}"><img src="#{t}" alt="#{title}"/></a>} }
   end
 
   private
-  def thumb overlay
-    parse
-    thumbname({:overlay => overlay, :omit_public => true})
+  def parse
+    @meta ||= VideoInfo.get(href)
   end
 
-  def parse
-    img = Net::HTTP.get("i.ytimg.com", "/vi/#{@id}/0.jpg")
+  def get_thumbs
+    img = Net::HTTP.get(URI(@meta.thumbnail_large))
 
     tmpfile = Tempfile.new(["tubemp", ".jpg"])
     begin
       tmpfile.binmode
-      tmpfile.write img
+      tmpfile.write(img)
       tmpfile.close
 
       images = Magick::ImageList.new(tmpfile.path, File.join("assets", "overlay.png"))
@@ -35,6 +48,9 @@ class YouTube
       images = nil
       tmpfile.unlink
     end
+
+    [ thumbname({:overlay => false, :absolute => true}),
+      thumbname({:overlay => true, :absolute  => true}) ]
   end
 
   # Creates a path to the thumbnail
@@ -47,7 +63,12 @@ class YouTube
 
     filename = opts[:overlay] ? "#{@id}_overlay": @id
     parts = ["thumbs", "#{filename}.png"]
-    parts.unshift("public") unless opts[:omit_public]
+
+    if opts[:absolute]
+      parts.unshift(@base_url)
+    else
+      parts.unshift("public")
+    end
     File.join(parts)
   end
 end
