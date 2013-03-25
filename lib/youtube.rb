@@ -15,14 +15,18 @@ class YouTube
     @meta.title
   end
 
+  def href
+    "http://www.youtube.com/watch?v=#{@id}"
+  end
+
   def tags
     parse
-    get_thumbs.map {|t| %Q{<img src="#{t}" alt="#{title}"/>} }
+    get_thumbs.map {|t| %Q{<a href="#{href}"><img src="#{t}" alt="#{title}"/></a>} }
   end
 
   private
   def parse
-    @meta ||= VideoInfo.get("http://www.youtube.com/watch?v=#{@id}")
+    @meta ||= VideoInfo.get(href)
   end
 
   def get_thumbs
@@ -31,7 +35,7 @@ class YouTube
     tmpfile = Tempfile.new(["tubemp", ".jpg"])
     begin
       tmpfile.binmode
-      tmpfile.write img
+      tmpfile.write(img)
       tmpfile.close
 
       images = Magick::ImageList.new(tmpfile.path, File.join("assets", "overlay.png"))

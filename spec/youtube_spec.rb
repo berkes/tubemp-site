@@ -1,6 +1,8 @@
 require File.join(File.dirname(__FILE__), "..", "lib", "youtube")
 
 IMAGE_RE = /\<img.*src="(.*)".*alt="(.*).*\/\>/
+LINK_RE  = /\<a.*href="(.*)".*\>/
+
 describe YouTube do
   before do
     info = mock("video");
@@ -39,6 +41,10 @@ describe YouTube do
 
       it 'should have the title as alt attribute' do
         @yt.tags[0].match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
+      end
+
+      it 'should have a link pointing to the youtube video' do
+        @yt.tags[0].match(LINK_RE)[1].should match /http:\/\/www\.youtube\.com/
       end
 
       context 'local image does not exist' do
@@ -82,6 +88,12 @@ describe YouTube do
   describe "#title" do
     it "should render a title" do
       @yt.title.should eq "Tony Tribe , Red Red Wine"
+    end
+  end
+
+  describe "#href" do
+    it 'should render a link' do
+      @yt.href.should eq "http://www.youtube.com/watch?v=#{@id}"
     end
   end
 
