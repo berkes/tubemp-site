@@ -29,13 +29,16 @@ __END__
 <body>
 
 	<div class="row">
-		<div class="large-12 columns">
-      <h1>tub<strong class="highlight">emp</strong></h1>
-			<hr />
+		<div class="large-4 large-centered columns">
+      <img src="img/logo.png" alt="tubemp logo" title="tubemp" class="logo" id="name" />
+		</div>
+		<div class="large-6 large-centered columns">
+      <h2 class="subheader"><small>Nuke all the privacy-bugs from youtube embeds</small></h2>
 		</div>
 	</div>
 
 	<div class="row">
+			<hr />
 		<div class="large-12 columns">
 			<h2><%= title %></h2>
       <%= yield %>
