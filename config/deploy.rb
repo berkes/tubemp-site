@@ -1,3 +1,5 @@
+require 'bundler/capistrano'
+
 set :application, "ET_tubemp"
 set :repository,  "git@github.com:berkes/tubemp.git"
 set :deploy_to, "/var/www/#{application}"
