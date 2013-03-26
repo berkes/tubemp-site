@@ -3,6 +3,9 @@ require File.join(File.dirname(__FILE__), 'lib', 'youtube')
 
 include ERB::Util
 
+# when using from Rackup
+enable :inline_templates
+
 get '/tags' do
   yt = YouTube.new params[:v], {:base_url => request.base_url }
 
