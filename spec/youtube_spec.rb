@@ -4,39 +4,29 @@ IMAGE_RE = /\<img.*src="(.*)".*alt="(.*).*\/\>/
 LINK_RE  = /\<a.*href="(.*)".*\>/
 
 describe YouTube do
-  before do
-    info = mock("video");
-    info.stub(:title).and_return("Tony Tribe , Red Red Wine")
-    info.stub(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
-    VideoInfo.stub(:get).and_return info
+  context "valid ID" do
+    before do
+      stub_info
+      @id = "D80QdsFWdcQ"
+      @yt = YouTube.new @id, {:base_url => "http://example.com"}
+      @filename = File.join("public", "thumbs", "#{@id}.png")
+    end
 
-    @id = "D80QdsFWdcQ"
-    @yt = YouTube.new @id, {:base_url => "http://example.com"}
-    @filename = File.join("public", "thumbs", "#{@id}.png")
-  end
-
-  describe '#tags' do
-    context "valid ID" do
+    describe '#tags' do
       it 'should render a list of valid image tags' do
         @yt.tags.each {|t| t.should match IMAGE_RE }
       end
 
       it 'should link to a thumbnail in PNG format' do
-        img = @yt.tags[0].match IMAGE_RE
-        src = img[1]
-        src.should =~ /#{@id}\.png/
+        @yt.tags[0].match(IMAGE_RE)[1].should match /#{@id}\.png/
       end
 
       it 'should link to the overlayed thumbnail with overlay=true' do
-        img = @yt.tags[1].match IMAGE_RE
-        src = img[1]
-        src.should =~ /#{@id}_overlay\.png/
+        @yt.tags[1].match(IMAGE_RE)[1].should match /#{@id}_overlay\.png/
       end
 
       it 'should link to an absolute URL' do
-        img = @yt.tags[0].match IMAGE_RE
-        src = img[1]
-        src.should match /^http:\/\/.*$/
+        img = @yt.tags[0].match(IMAGE_RE)[1].should match /^http:\/\/.*$/
       end
 
       it 'should have the title as alt attribute' do
@@ -79,22 +69,67 @@ describe YouTube do
 
       it 'should overlay a play-icon' do
         @yt.tags
-        filename = File.join("public", "thumbs", "#{@id}_over.png")
-        File.exists?(filename)
+        File.exists?(File.join("public", "thumbs", "#{@id}_over.png"))
       end
-    end # context "valid ID"
-  end
+    end
 
-  describe "#title" do
-    it "should render a title" do
-      @yt.title.should eq "Tony Tribe , Red Red Wine"
+    describe "#title" do
+      it "should render a title" do
+        @yt.title.should eq "Tony Tribe , Red Red Wine"
+      end
+    end
+
+    describe "#href" do
+      it 'should render a link' do
+        @yt.href.should eq "http://www.youtube.com/watch?v=#{@id}"
+      end
+    end
+
+    describe "#valid?" do
+      it 'should return true for a valid youtube-ID' do
+        @yt = YouTube.new("D80QdsFWdcQ")
+        @yt.should be_valid
+      end
+    end
+  end #end valid-ID
+
+  describe "invalid-ID" do
+    before do
+      VideoInfo.stub(:get).and_return nil
+      @yt = YouTube.new("INVALID")
+    end
+
+    describe "#valid?" do
+      it 'should return false for an invalid youtube-ID' do
+        @yt = YouTube.new("INVALID")
+        @yt.should_not be_valid
+      end
     end
   end
 
-  describe "#href" do
-    it 'should render a link' do
-      @yt.href.should eq "http://www.youtube.com/watch?v=#{@id}"
+  describe "liberal IDs" do
+    before do
+      @id = "D80QdsFWdcQ"
+    end
+
+    it "should allow an ID" do
+      @yt = YouTube.new(@id)
+      @yt.id.should eq @id
+    end
+
+    it 'should allow an URL' do
+      @yt = YouTube.new("http://www.youtube.com/watch?v=#{@id}")
+      @yt.id.should eq @id
+    end
+
+    it 'should allow a shortened URL' do
+      @yt = YouTube.new("http://youtu.be/#{@id}")
+      @yt.id.should eq @id
+    end
+
+    it 'should allow an embed-code' do
+      @yt = YouTube.new("<iframe src=\"http://www.youtube.com/embed/D80QdsFWdcQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>")
+      @yt.id.should eq @id
     end
   end
-
 end
