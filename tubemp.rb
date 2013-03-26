@@ -6,7 +6,11 @@ include ERB::Util
 get '/tags' do
   yt = YouTube.new params[:v], {:base_url => request.base_url }
 
-  erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
+  if yt.valid?
+    erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
+  else
+    not_found
+  end
 end
 
 get '/' do

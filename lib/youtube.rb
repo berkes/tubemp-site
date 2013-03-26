@@ -24,6 +24,11 @@ class YouTube
     get_thumbs.map {|t| %Q{<a href="#{href}"><img src="#{t}" alt="#{title}"/></a>} }
   end
 
+  def valid?
+    parse
+    not @meta.nil?
+  end
+
   private
   def parse
     @meta ||= VideoInfo.get(href)

@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe "tubemp tags" do
-  before do
+  it "should have a page for a youtube ID" do
     get '/tags?v=D80QdsFWdcQ'
+    last_response.should be_ok
   end
 
-  it "should have a page for a youtube ID" do
-    last_response.should be_ok
+  it 'should give a 404 on an invalid ID' do
+    get 'tags?v=INVALID'
+    last_response.should be_not_found
   end
 end
 

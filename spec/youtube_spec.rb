@@ -4,19 +4,19 @@ IMAGE_RE = /\<img.*src="(.*)".*alt="(.*).*\/\>/
 LINK_RE  = /\<a.*href="(.*)".*\>/
 
 describe YouTube do
-  before do
-    info = mock("video");
-    info.stub(:title).and_return("Tony Tribe , Red Red Wine")
-    info.stub(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
-    VideoInfo.stub(:get).and_return info
+  context "valid ID" do
+    before do
+      info = mock("video");
+      info.stub(:title).and_return("Tony Tribe , Red Red Wine")
+      info.stub(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
+      VideoInfo.stub(:get).and_return info
 
-    @id = "D80QdsFWdcQ"
-    @yt = YouTube.new @id, {:base_url => "http://example.com"}
-    @filename = File.join("public", "thumbs", "#{@id}.png")
-  end
+      @id = "D80QdsFWdcQ"
+      @yt = YouTube.new @id, {:base_url => "http://example.com"}
+      @filename = File.join("public", "thumbs", "#{@id}.png")
+    end
 
-  describe '#tags' do
-    context "valid ID" do
+    describe '#tags' do
       it 'should render a list of valid image tags' do
         @yt.tags.each {|t| t.should match IMAGE_RE }
       end
@@ -82,19 +82,39 @@ describe YouTube do
         filename = File.join("public", "thumbs", "#{@id}_over.png")
         File.exists?(filename)
       end
-    end # context "valid ID"
-  end
+    end
 
-  describe "#title" do
-    it "should render a title" do
-      @yt.title.should eq "Tony Tribe , Red Red Wine"
+    describe "#title" do
+      it "should render a title" do
+        @yt.title.should eq "Tony Tribe , Red Red Wine"
+      end
+    end
+
+    describe "#href" do
+      it 'should render a link' do
+        @yt.href.should eq "http://www.youtube.com/watch?v=#{@id}"
+      end
+    end
+
+    describe "#valid?" do
+      it 'should return true for a valid youtube-ID' do
+        @yt = YouTube.new("D80QdsFWdcQ")
+        @yt.should be_valid
+      end
+    end
+  end #end valid-ID
+
+  describe "invalid-ID" do
+    before do
+      VideoInfo.stub(:get).and_return nil
+      @yt = YouTube.new("INVALID")
+    end
+
+    describe "#valid?" do
+      it 'should return false for an invalid youtube-ID' do
+        @yt = YouTube.new("INVALID")
+        @yt.should_not be_valid
+      end
     end
   end
-
-  describe "#href" do
-    it 'should render a link' do
-      @yt.href.should eq "http://www.youtube.com/watch?v=#{@id}"
-    end
-  end
-
 end
