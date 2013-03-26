@@ -9,7 +9,7 @@ get '/tags' do
   if yt.valid?
     erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
   else
-    not_found
+    not_found erb(:not_found, :locals => { :title => "Not Found", :id => params[:v]} )
   end
 end
 
@@ -130,3 +130,9 @@ __END__
 <div class="large-12 columns">
   <a href="/">Create another one</a>
 </div>
+
+@@ not_found
+  <div class="large-12 columns">
+    Youtube video with id <em><%=h id %></em> not found.
+  </div>
+

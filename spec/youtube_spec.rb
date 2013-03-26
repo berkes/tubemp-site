@@ -6,11 +6,7 @@ LINK_RE  = /\<a.*href="(.*)".*\>/
 describe YouTube do
   context "valid ID" do
     before do
-      info = mock("video");
-      info.stub(:title).and_return("Tony Tribe , Red Red Wine")
-      info.stub(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
-      VideoInfo.stub(:get).and_return info
-
+      stub_info
       @id = "D80QdsFWdcQ"
       @yt = YouTube.new @id, {:base_url => "http://example.com"}
       @filename = File.join("public", "thumbs", "#{@id}.png")
@@ -108,6 +104,32 @@ describe YouTube do
         @yt = YouTube.new("INVALID")
         @yt.should_not be_valid
       end
+    end
+  end
+
+  describe "liberal IDs" do
+    before do
+      @id = "D80QdsFWdcQ"
+    end
+
+    it "should allow an ID" do
+      @yt = YouTube.new(@id)
+      @yt.id.should eq @id
+    end
+
+    it 'should allow an URL' do
+      @yt = YouTube.new("http://www.youtube.com/watch?v=#{@id}")
+      @yt.id.should eq @id
+    end
+
+    it 'should allow a shortened URL' do
+      @yt = YouTube.new("http://youtu.be/#{@id}")
+      @yt.id.should eq @id
+    end
+
+    it 'should allow an embed-code' do
+      @yt = YouTube.new("<iframe src=\"http://www.youtube.com/embed/D80QdsFWdcQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>")
+      @yt.id.should eq @id
     end
   end
 end
