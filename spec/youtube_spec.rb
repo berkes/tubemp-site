@@ -22,21 +22,15 @@ describe YouTube do
       end
 
       it 'should link to a thumbnail in PNG format' do
-        img = @yt.tags[0].match IMAGE_RE
-        src = img[1]
-        src.should =~ /#{@id}\.png/
+        @yt.tags[0].match(IMAGE_RE)[1].should match /#{@id}\.png/
       end
 
       it 'should link to the overlayed thumbnail with overlay=true' do
-        img = @yt.tags[1].match IMAGE_RE
-        src = img[1]
-        src.should =~ /#{@id}_overlay\.png/
+        @yt.tags[1].match(IMAGE_RE)[1].should match /#{@id}_overlay\.png/
       end
 
       it 'should link to an absolute URL' do
-        img = @yt.tags[0].match IMAGE_RE
-        src = img[1]
-        src.should match /^http:\/\/.*$/
+        img = @yt.tags[0].match(IMAGE_RE)[1].should match /^http:\/\/.*$/
       end
 
       it 'should have the title as alt attribute' do
@@ -79,8 +73,7 @@ describe YouTube do
 
       it 'should overlay a play-icon' do
         @yt.tags
-        filename = File.join("public", "thumbs", "#{@id}_over.png")
-        File.exists?(filename)
+        File.exists?(File.join("public", "thumbs", "#{@id}_over.png"))
       end
     end
 
