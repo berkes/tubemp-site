@@ -87,6 +87,34 @@ __END__
     </div>
   </form>
 </div>
+<div class="large-12 columns">
+  <h2>How does it work?</h2>
+</div>
+<div class="large-4 columns">
+<div class="panel">
+  <h2>1. <small>Provide the YouTube-code</small></h2>
+  <p>Paste your originial YouTube embed-code, the ID or the video URL in the field above, and press the button.</p>
+  <p>tubemp is a play on the word <a href="">EMP</a> and tube. Tube, referring to YouTube, EMP being a military (side)effect, which disables many electronic devises, also electronics that spy on you.</p>
+</div>
+</div>
+<div class="large-4 columns"><div class="panel">
+  <h2>2. <small>tubemp creates an image that looks like a youtube-player</small></h2>
+  <p>Copy and paste the code you get onto your site. You can either choose to place a simple image, or one that has a "YouTube" play icon on it.<br/>
+  This code we provide, links to the original video-page on YouTube. The image is served from the tubemp server and domain.
+  </p>
+  <p>Now only the site who created the new embed-code can track your visitors! You probably don't want that either,
+  so you probably want to <a href="">install this tubemp</a> on your own server and domain, because it is <a href="">Open Source Software</a>. Or you can <a href="">have me do that installation for you</a>
+  </p>
+  </div>
+</div>
+<div class="large-4 columns"><div class="panel">
+  <h2>3. <small>Bug-free?</small></h2>
+  <p>When you place the default YouTube-embed-code on your site, Google (who owns YouTube) can, and will, track all the visitors of <em>your</em> site!<br />
+  You, or your users may not like that. In many countries there are even laws and regulations that don't allow you to place things (like embed-codes, ads) on your
+  site that allow <em>third parties</em> to track your visitors.<br />
+  </p>
+  </div>
+</div>
 
 @@ tags
 <% tags.each do |tag| %>
