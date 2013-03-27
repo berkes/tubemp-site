@@ -1,4 +1,4 @@
-# tubemp
+![tubemp](https://raw.github.com/berkes/tubemp/develop/public/img/logo.png)
 
 > Nuke all the privacy-bugs from YouTube embeds
 
