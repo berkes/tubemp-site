@@ -78,6 +78,15 @@ __END__
   <script>
     $(document).foundation();
   </script>
+
+  <script type="text/javascript" src="zeroclipboard/ZeroClipboard.js"></script>
+  <script>
+    ZeroClipboard.setDefaults( { moviePath: '/zeroclipboard/ZeroClipboard.swf' } );
+    $(document).ready(function() {
+      /* Init zero-clipboard */
+      $("input.copy_button").each(function() { new ZeroClipboard($(this)); });
+    });
+  </script>
 </body>
 </html>
 
@@ -124,10 +133,17 @@ __END__
 </div>
 
 @@ tags
-<% tags.each do |tag| %>
+<% tags.each_with_index do |tag, index| %>
   <div class="large-6 columns">
     <%= tag %><br />
-    <input type="text" value="<%= html_escape tag %>" />
+    <div class="row collapse">
+      <div class="large-10 columns">
+        <input type="text" class="copy_value" id="copy_tag_<%= index %>" value="<%= html_escape tag %>" />
+      </div>
+      <div class="large-2 columns">
+        <input type="button" class="button prefix copy_button" id="copy_button_<%= index %>" data-clipboard-target="copy_tag_<%= index %>" value="Copy" />
+      </div>
+    </div>
   </div>
 <% end %>
 <div class="large-12 columns">
