@@ -52,6 +52,24 @@ __END__
     <%= yield %>
 	</div>
 
+  <div class="footer row">
+    <hr/>
+    <div class="large-6 columns">
+      <h2><small>Install it yourself...</small></h2>
+      <p>Only the site who created the new embed-code can track your visitors, because this site serves the images. You probably don't want that either,
+        so you probably want to <a href="https://github.com/berkes/tubemp#installation">install this tubemp</a> on your own server and domain, because it is <a href="https://github.com/berkes/tubemp">Open Source Software</a>.
+      </p>
+    </div>
+    <div class="large-6 columns">
+      <h2><small>...or, get me to install it for you.</small></h2>
+      <p>You can find my contact details at <a href="http://berk.es/about.html">my website</a>. Or you can email me at <a href='ma&#105;lto&#58;be&#114;&#64;&#37;77%65&#98;&#37;73ch%&#55;5u%72&#46;c%6Fm'>be&#114;&#64;we&#98;schuu&#114;&#46;c&#111;m</a> to discuss the options.</p>
+      <p>I can assist in anything, from getting a server or hoster to installation and customisation.</p>
+    </div>
+    <div class="large-12 columns">
+     <p>The name tubemp is a play on the word <a href="https://en.wikipedia.org/wiki/Electromagnetic_pulse">EMP</a> and tube. Tube, referring to YouTube, EMP being a military (side)effect, which disables many electronic devises, also electronics that spy on you.</p> 
+    </div>
+  </div>
+
   <script>
   document.write('<script src=' +
   ('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
@@ -97,16 +115,13 @@ __END__
   <div class="panel">
   <h2>1. <small>Provide the YouTube-code</small></h2>
   <p>Paste your originial YouTube embed-code, the ID or the video URL in the field above, and press the button.</p>
-  <p>tubemp is a play on the word <a href="https://en.wikipedia.org/wiki/Electromagnetic_pulse">EMP</a> and tube. Tube, referring to YouTube, EMP being a military (side)effect, which disables many electronic devises, also electronics that spy on you.</p> 
+  <p>tubemp detects what video you want, downloads the thumbnail for it and re-creates a thumbnail from it.</p>
   </div>
 </div>
 <div class="large-4 columns"><div class="panel">
   <h2>2. <small>tubemp creates an image that looks like a youtube-player</small></h2>
   <p>Copy and paste the code you get onto your site. You can either choose to place a simple image, or one that has a YouTube play icon sticked to it.<br/>
-  This code we provide, links to the original video-page on YouTube. The image is served from the tubemp server and domain.
-  </p>
-  <p>Now only the site who created the new embed-code can track your visitors! You probably don't want that either,
-  so you probably want to <a href="https://github.com/berkes/tubemp#installation">install this tubemp</a> on your own server and domain, because it is <a href="https://github.com/berkes/tubemp">Open Source Software</a>. Or you can <a href="http://berk.es/about.html">have me do that installation for you</a>
+  This code links to the original video-page on YouTube. The image is served from the tubemp server and domain.
   </p>
   </div>
 </div>
