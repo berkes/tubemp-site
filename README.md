@@ -49,10 +49,8 @@ Bundler installs everything, but for reference:
 * rspec for testing and development
 
 ## TODOS
-* Write this README.
 * Write installation instructions.
 * Make a gem into this, allowing a simple `gem install tubemp && tubemp`
   to run your own server.
-* Improve the Copy/pasting; auto-select, copy-to-clipboard button.
 * Introduce a JSON-API.
 * Make a wordpress and Drupal module, using that API.
