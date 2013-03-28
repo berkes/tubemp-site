@@ -106,6 +106,7 @@ __END__
         <input type="submit" class="button prefix" value="Create code" />
       </div>
     </div>
+    <p class="message">For example <em>http://youtu.be/D80QdsFWdcQ</em>.</p>
   </form>
 </div>
 <div class="large-12 columns">
