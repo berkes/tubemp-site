@@ -17,7 +17,7 @@ get '/tags' do
 end
 
 get '/' do
-  erb :index, :locals => { :title => "Create bug-free embed code" }
+  erb :index, :locals => { :title => "YouTube embeds without third party trackers." }
 end
 
 __END__
@@ -40,7 +40,7 @@ __END__
       <a href="/"><img src="img/logo.png" alt="tubemp logo" title="tubemp" class="logo" id="name" /></a>
 		</div>
 		<div class="large-6 large-centered columns">
-      <h2 class="subheader"><small>Nuke all the privacy-bugs from youtube embeds</small></h2>
+      <h2 class="subheader"><small>YouTube embeds without third party trackers.</small></h2>
 		</div>
 	</div>
 
@@ -103,7 +103,7 @@ __END__
         <input type="text" name="v" placeholder="Youtube URL, ID, or embed-code">
       </div>
       <div class="large-2 columns">
-        <input type="submit" class="button prefix" value="Remove the bugs" />
+        <input type="submit" class="button prefix" value="Create code" />
       </div>
     </div>
   </form>
@@ -126,7 +126,7 @@ __END__
   </div>
 </div>
 <div class="large-4 columns"><div class="panel">
-  <h2>3. <small>Bug-free?</small></h2>
+  <h2>3. <small>Third party trackers?</small></h2>
   <p>When you place the default YouTube-embed-code on your site, Google (who owns YouTube) can, and will, track all the visitors of <em>your</em> site!<br />
   You, or your users may not like that. In many countries there are even laws and regulations that don't allow you to place things (like embed-codes, ads) on your
   site that allow <em>third parties</em> to track your visitors.<br />
