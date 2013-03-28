@@ -1,6 +1,6 @@
 # tubemp
 
-> Nuke all the privacy-bugs from YouTube embeds
+> YouTube embeds without third party trackers.
 
 tubemp is a tiny web-application which creates and serves thumbnail-images from YouTube embed-codes. These images link to the video and look like embedded videos.
 
