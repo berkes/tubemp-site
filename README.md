@@ -1,4 +1,4 @@
-# tubemp
+![tubemp](https://raw.github.com/berkes/tubemp/develop/public/img/logo.png)
 
 > YouTube embeds without third party trackers.
 
@@ -18,6 +18,12 @@ own domain, is a good solution for all this.
 
 This tiny application aids in that.
 
+## Features
+
+* Simple, friendly web-interface.
+* Bookmarkable: tubemp.example.com/tags?v=D80QdsFWdcQ
+* JSON API: tubemp.example.com/tags.json?v=D80QdsFWdcQ
+
 ## Installation
 
 ### The quick way
@@ -35,6 +41,21 @@ simplifies the installation and running greatly.
 
 todo.
 
+## JSON
+
+You can get the result as JSON by adding `.json` to the tags page:
+
+    curl http://tubemp.example.com/tags.json?v=<youtube-id>
+
+This returns a hash with the variations of the tags. For example, in PHP:
+
+    php > print_r(json_decode(file_get_contents("http://tubemp.example.com/tags.json?v=D80QdsFWdcQ")));
+    stdClass Object
+    (
+        [basic] => <a href="http://www.youtube.com/watch?v=D80QdsFWdcQ"><img src="http://localhost:9393/thumbs/D80QdsFWdcQ.png" alt="Tony Tribe , Red Red Wine"/></a>
+        [overlay] => <a href="http://www.youtube.com/watch?v=D80QdsFWdcQ"><img src="http://localhost:9393/thumbs/D80QdsFWdcQ_overlay.png" alt="Tony Tribe , Red Red Wine"/></a>
+    )
+
 ## Author and Contributors
 
 [Bèr `berkes` Kessels](http://berk.es)
@@ -49,10 +70,7 @@ Bundler installs everything, but for reference:
 * rspec for testing and development
 
 ## TODOS
-* Write this README.
 * Write installation instructions.
 * Make a gem into this, allowing a simple `gem install tubemp && tubemp`
   to run your own server.
-* Improve the Copy/pasting; auto-select, copy-to-clipboard button.
-* Introduce a JSON-API.
 * Make a wordpress and Drupal module, using that API.

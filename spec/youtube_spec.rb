@@ -14,27 +14,27 @@ describe YouTube do
 
     describe '#tags' do
       it 'should render a list of valid image tags' do
-        @yt.tags.each {|t| t.should match IMAGE_RE }
+        @yt.tags.each {|key,t| t.should match IMAGE_RE }
       end
 
       it 'should link to a thumbnail in PNG format' do
-        @yt.tags[0].match(IMAGE_RE)[1].should match /#{@id}\.png/
+        @yt.tags["basic"].match(IMAGE_RE)[1].should match /#{@id}\.png/
       end
 
       it 'should link to the overlayed thumbnail with overlay=true' do
-        @yt.tags[1].match(IMAGE_RE)[1].should match /#{@id}_overlay\.png/
+        @yt.tags["overlay"].match(IMAGE_RE)[1].should match /#{@id}_overlay\.png/
       end
 
       it 'should link to an absolute URL' do
-        img = @yt.tags[0].match(IMAGE_RE)[1].should match /^http:\/\/.*$/
+        @yt.tags["basic"].match(IMAGE_RE)[1].should match /^http:\/\/.*$/
       end
 
       it 'should have the title as alt attribute' do
-        @yt.tags[0].match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
+        @yt.tags["basic"].match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
       end
 
       it 'should have a link pointing to the youtube video' do
-        @yt.tags[0].match(LINK_RE)[1].should match /http:\/\/www\.youtube\.com/
+        @yt.tags["basic"].match(LINK_RE)[1].should match /http:\/\/www\.youtube\.com/
       end
 
       context 'local image does not exist' do
