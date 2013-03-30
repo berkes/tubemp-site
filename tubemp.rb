@@ -141,15 +141,15 @@ __END__
 </div>
 
 @@ tags
-<% tags.each_with_index do |tag, index| %>
+<% tags.each do |key, tag| %>
   <div class="large-6 columns">
     <%= tag %><br />
     <div class="row collapse">
       <div class="large-10 columns">
-        <input type="text" class="copy_value" id="copy_tag_<%= index %>" value="<%= html_escape tag %>" />
+        <input type="text" class="copy_value" id="copy_tag_<%= key %>" value="<%= html_escape tag %>" />
       </div>
       <div class="large-2 columns">
-        <input type="button" class="button prefix copy_button" id="copy_button_<%= index %>" data-clipboard-target="copy_tag_<%= index %>" value="Copy" />
+        <input type="button" class="button prefix copy_button" id="copy_button_<%= key %>" data-clipboard-target="copy_tag_<%= key %>" value="Copy" />
       </div>
     </div>
   </div>
