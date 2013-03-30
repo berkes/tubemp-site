@@ -1,13 +1,12 @@
 require 'sinatra'
 require 'json'
 require File.join(File.dirname(__FILE__), 'lib', 'youtube')
-
 include ERB::Util
 
 # when using from Rackup
 enable :inline_templates
 
-get '/tags.:format' do
+get '/tags.?:format?' do
   yt = YouTube.new params[:v], {:base_url => request.base_url }
 
   if yt.valid?
