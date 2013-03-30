@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'json'
 require File.join(File.dirname(__FILE__), 'lib', 'youtube')
 
 include ERB::Util
@@ -6,12 +7,17 @@ include ERB::Util
 # when using from Rackup
 enable :inline_templates
 
-get '/tags' do
+get '/tags.:format' do
   yt = YouTube.new params[:v], {:base_url => request.base_url }
 
   if yt.valid?
-    erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
-  else
+    case params[:format]
+    when "json"
+      yt.tags.to_json
+    else
+      erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
+    end
+  else # not valid
     not_found erb(:not_found, :locals => { :title => "Not Found", :id => params[:v]} )
   end
 end

@@ -21,7 +21,7 @@ class YouTube
 
   def tags
     parse
-    get_thumbs.map {|t| %Q{<a href="#{href}"><img src="#{t}" alt="#{title}"/></a>} }
+    Hash[get_thumbs.map {|key,value| [key, %Q{<a href="#{href}"><img src="#{value}" alt="#{title}"/></a>}] }]
   end
 
   def valid?
@@ -73,8 +73,10 @@ class YouTube
       tmpfile.unlink
     end
 
-    [ thumbname({:overlay => false, :absolute => true}),
-      thumbname({:overlay => true, :absolute  => true}) ]
+    {
+     :basic => thumbname({:overlay => false, :absolute => true}),
+     :overlay => thumbname({:overlay => true, :absolute  => true})
+    }
   end
 
   # Creates a path to the thumbnail
