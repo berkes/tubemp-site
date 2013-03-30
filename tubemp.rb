@@ -123,6 +123,7 @@ __END__
   <h2>1. <small>Provide the YouTube-code</small></h2>
   <p>Paste your originial YouTube embed-code, the ID or the video URL in the field above, and press the button.</p>
   <p>tubemp detects what video you want, downloads the thumbnail for it and re-creates a thumbnail from it.</p>
+  <p>There is a simple <a href="https://github.com/berkes/tubemp#json">JSON API version</a></p>
   </div>
 </div>
 <div class="large-4 columns"><div class="panel">
