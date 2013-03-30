@@ -74,8 +74,8 @@ class YouTube
     end
 
     {
-     :basic => thumbname({:overlay => false, :absolute => true}),
-     :overlay => thumbname({:overlay => true, :absolute  => true})
+     "basic" => thumbname({:overlay => false, :absolute => true}),
+     "overlay" => thumbname({:overlay => true, :absolute  => true})
     }
   end
 
