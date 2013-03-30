@@ -9,6 +9,7 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     diff-lcs (1.2.1)
     highline (1.6.16)
+    json (1.7.7)
     multi_json (1.7.2)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
@@ -46,6 +47,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano (~> 2.14)
+  json (~> 1.7.7)
   rack-test
   rmagick (~> 2.13)
   rspec (~> 2.13)
