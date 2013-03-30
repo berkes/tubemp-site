@@ -21,6 +21,10 @@ describe 'tubemp tags.json' do
     last_response.should be_ok
   end
 
+  it 'should send json content-type' do
+    last_response.content_type.should match /.*application\/json.*/
+  end
+
   it 'should return the tags in json' do
     tags = JSON.parse(last_response.body.strip)
 

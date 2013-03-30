@@ -12,6 +12,7 @@ get '/tags.?:format?' do
   if yt.valid?
     case params[:format]
     when "json"
+      content_type :json
       yt.tags.to_json
     else
       erb :tags, :locals => {:tags => yt.tags, :title => yt.title}
