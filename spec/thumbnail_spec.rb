@@ -1,0 +1,79 @@
+require "spec_helper"
+require File.join(File.dirname(__FILE__), "..", "lib", "thumbnail")
+
+describe Thumbnail do
+
+  before do
+    @id = "D80QdsFWdcQ"
+    @filename = File.join("public", "thumbs", "#{@id}.png")
+    @tmpfile    = File.open(File.join(File.dirname(__FILE__), "fixtures", "thumb.jpg"))
+    @thumbnail = Thumbnail.new(@id, @tmpfile)
+  end
+
+  describe "#write" do
+    it 'should create a simple png' do
+      @thumbnail.write
+      File.should exist(@filename)
+    end
+
+    it 'should create a png-file with a suffix when provided' do
+      @thumbnail.write
+      File.should exist(File.join("public", "thumbs", "#{@id}_overlay.png"))
+    end
+
+    it 'should be chainable' do
+      @thumbnail.write.should be_kind_of(Thumbnail)
+    end
+  end
+
+  describe "#images" do
+    it 'should be an ImageList' do
+      @thumbnail.images.should be_kind_of Magick::ImageList
+    end
+    it 'should include the tmpfile' do
+      expected = Magick::ImageList.new(@tmpfile.path)[0]
+      @thumbnail.images.should include expected
+    end
+  end
+
+  describe "#add_overlay" do
+    before do
+      @overlay_name = File.join("assets", "overlay.png")
+      @expected = Magick::ImageList.new(@overlay_name)[0]
+      @thumbnail.add_overlay @overlay_name
+    end
+
+    it 'should add files to ImageList stack' do
+      @thumbnail.images.should include @expected
+    end
+
+    it 'should call combine the images to one' do
+      Magick::Image.any_instance.should_receive(:composite).once.and_return(@expected)
+      @thumbnail.write
+    end
+
+    it 'should be chainable' do
+      @thumbnail.add_overlay(@overlay_name).should be_kind_of(Thumbnail)
+    end
+  end
+
+  describe "uri_path" do
+    it 'should return an absolute path from within "/public".' do
+      @thumbnail.uri_path.should eq "/thumbs/#{@id}.png"
+    end
+  end
+
+  context 'Image exists' do
+    before do
+      FileUtils.cp(root_path.join("spec", "fixtures", "thumb.jpg"), @filename)
+      @existing = File.stat(@filename)
+    end
+
+    it 'should overwrite when a newer image is found online' do
+      pending "implement"
+      @yt.tags(@uri)
+      @existing.should_not eq File.stat(@filename)
+    end
+  end
+
+end
