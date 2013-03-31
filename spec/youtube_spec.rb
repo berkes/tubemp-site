@@ -1,4 +1,6 @@
+require "spec_helper"
 require File.join(File.dirname(__FILE__), "..", "lib", "youtube")
+require File.join(File.dirname(__FILE__), "..", "lib", "thumbnail")
 
 IMAGE_RE = /\<img.*src="(.*)".*alt="(.*).*\/\>/
 LINK_RE  = /\<a.*href="(.*)".*\>/
@@ -8,68 +10,45 @@ describe YouTube do
     before do
       stub_info
       @id = "D80QdsFWdcQ"
-      @yt = YouTube.new @id, {:base_url => "http://example.com"}
+      @yt = YouTube.new @id
       @filename = File.join("public", "thumbs", "#{@id}.png")
+
+      @thumb = mock(Thumbnail)
+      @thumb.stub(:uri_path => "/thumbs/#{@id}.png")
+      @thumb.stub(:add_overlay).and_return @thumb
+      @thumb.stub(:write).and_return @thumb
+
+      @uri = URI("http://example.com")
     end
 
     describe '#tags' do
+      before do
+        @tags = @yt.tags(@uri)
+        @basic = @tags["basic"]
+      end
       it 'should render a list of valid image tags' do
-        @yt.tags.each {|key,t| t.should match IMAGE_RE }
+        @tags.each {|key,t| t.should match IMAGE_RE }
+      end
+
+      it 'should have an overlayed image' do
+        Thumbnail.any_instance.should_receive(:add_overlay).and_return @thumb
+        @yt.tags(@uri)
       end
 
       it 'should link to a thumbnail in PNG format' do
-        @yt.tags["basic"].match(IMAGE_RE)[1].should match /#{@id}\.png/
-      end
-
-      it 'should link to the overlayed thumbnail with overlay=true' do
-        @yt.tags["overlay"].match(IMAGE_RE)[1].should match /#{@id}_overlay\.png/
+        @basic.match(IMAGE_RE)[1].should match /#{@id}\.png/
       end
 
       it 'should link to an absolute URL' do
-        @yt.tags["basic"].match(IMAGE_RE)[1].should match /^http:\/\/.*$/
+        @basic.match(IMAGE_RE)[1].should match /^http:\/\/.*$/
       end
 
       it 'should have the title as alt attribute' do
-        @yt.tags["basic"].match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
+        @basic.match(IMAGE_RE)[2].should match "Tony Tribe , Red Red Wine"
       end
 
       it 'should have a link pointing to the youtube video' do
-        @yt.tags["basic"].match(LINK_RE)[1].should match /http:\/\/www\.youtube\.com/
-      end
-
-      context 'local image does not exist' do
-        before do
-          File.delete @filename if File.exists? @filename
-        end
-
-        it 'should create its thumb in "public/thumbs" dir' do
-          @yt.tags
-          File.exists?(@filename).should be_true
-        end
-
-        it 'should get the large thumbnail' do
-          @yt.tags
-          img = Magick::ImageList.new(@filename)
-          img.rows.should >= 300
-          img.columns.should >= 400
-        end
-      end
-
-      context 'Image exists' do
-        before do
-          FileUtils.cp(root_path.join("spec", "fixtures", "thumb.jpg"), @filename)
-          @existing = File.stat(@filename)
-        end
-
-        it 'should overwrite when a newer image is found online' do
-          @yt.tags
-          @existing.should_not eq File.stat(@filename)
-        end
-      end
-
-      it 'should overlay a play-icon' do
-        @yt.tags
-        File.exists?(File.join("public", "thumbs", "#{@id}_over.png"))
+        @basic.match(LINK_RE)[1].should match /http:\/\/www\.youtube\.com/
       end
     end
 
@@ -90,6 +69,15 @@ describe YouTube do
         @yt = YouTube.new("D80QdsFWdcQ")
         @yt.should be_valid
       end
+    end
+
+    it 'should get the large thumbnail' do
+      # re-stub to allow message-expectation
+      info = mock("video")
+      info.stub(:title)
+      info.should_receive(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
+      VideoInfo.stub(:get).and_return info
+      @yt.tags(@uri)
     end
   end #end valid-ID
 
