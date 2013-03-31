@@ -5,7 +5,9 @@ describe Thumbnail do
 
   before do
     @id = "D80QdsFWdcQ"
-    @filename = File.join("public", "thumbs", "#{@id}.png")
+    @slice = @id.slice(0,2)
+    @container = File.join("public", "thumbs", @slice)
+    @filename = File.join(@container, "#{@id}.png")
     @tmpfile    = File.open(File.join(File.dirname(__FILE__), "fixtures", "thumb.jpg"))
     @thumbnail = Thumbnail.new(@id, @tmpfile)
   end
@@ -16,9 +18,10 @@ describe Thumbnail do
       File.should exist(@filename)
     end
 
-    it 'should create a png-file with a suffix when provided' do
+    it 'should include overlay filenames in filename' do
+      @thumbnail.add_overlay @tmpfile #contains the name "thumb"
       @thumbnail.write
-      File.should exist(File.join("public", "thumbs", "#{@id}_overlay.png"))
+      File.should exist(File.join(@container, "#{@id}_thumb.png"))
     end
 
     it 'should be chainable' do
@@ -45,9 +48,8 @@ describe Thumbnail do
 
       it 'to a subdirectory of the first two characters of the id' do
         @thumbnail.write
-        File.should exist(File.join(@container, "D8"))
+        File.should exist(File.join(@container, @slice))
       end
-
     end
   end
 
@@ -84,7 +86,7 @@ describe Thumbnail do
 
   describe "uri_path" do
     it 'should return an absolute path from within "/public".' do
-      @thumbnail.uri_path.should eq "/thumbs/#{@id}.png"
+      @thumbnail.uri_path.should eq "/thumbs/#{@slice}/#{@id}.png"
     end
   end
 end

@@ -1,3 +1,5 @@
+require "pathname"
+
 class Thumbnail
   def initialize id, tmpfile
     @id = id
@@ -11,7 +13,7 @@ class Thumbnail
   end
 
   def uri_path
-    File.join("/", "thumbs", filename)
+    File.join("/", "thumbs", container_dir, filename)
   end
 
   def write suffix = nil
@@ -21,7 +23,7 @@ class Thumbnail
     end
 
     extra_parts = [suffix] unless suffix.nil?
-    final.write(container_dir.join(filename))
+    final.write(root.join(container_dir, filename))
     #it should be easier and cleaner with flatten: however: no idea how to CenterGravity that
     # see http://stackoverflow.com/questions/15724387/how-to-flatten-rmagick-images-and-center-them
     #@images.flatten_images.write(File.join("public", "thumbs", parts.join("_") + ".png"))
@@ -50,10 +52,10 @@ class Thumbnail
   end
 
   def container_dir
-    path = root.join(@id.slice(0,2))
+    dirname = @id.slice(0,2)
 
-    FileUtils.mkdir_p(path) unless File.exists?(path)
+    FileUtils.mkdir_p(root.join(dirname)) unless File.exists?(dirname)
 
-    path
+    dirname
   end
 end
