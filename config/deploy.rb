@@ -16,6 +16,8 @@ default_run_options[:pty] = true
 # Agent forwarding: use my local priv ssh keys for access to github.
 ssh_options[:forward_agent] = true
 
+set :shared_children, shared_children + %w{public/thumbs} #Add uploads to be shared. 
+
 # If you are using Passenger mod_rails uncomment this:
 # namespace :deploy do
 #   task :start do ; end
