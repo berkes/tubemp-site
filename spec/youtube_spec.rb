@@ -70,6 +70,15 @@ describe YouTube do
         @yt.should be_valid
       end
     end
+
+    it 'should get the large thumbnail' do
+      # re-stub to allow message-expectation
+      info = mock("video")
+      info.stub(:title)
+      info.should_receive(:thumbnail_large).and_return("http://i.ytimg.com/vi/D80QdsFWdcQ/hqdefault.jpg")
+      VideoInfo.stub(:get).and_return info
+      @yt.tags(@uri)
+    end
   end #end valid-ID
 
   describe "invalid-ID" do
@@ -110,11 +119,5 @@ describe YouTube do
       @yt = YouTube.new("<iframe src=\"http://www.youtube.com/embed/D80QdsFWdcQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>")
       @yt.id.should eq @id
     end
-  end
-
-  it 'should get the large thumbnail' do
-    pending "Implement not by looking at the resuling image size, but by looking at the info and paramter fetched from there"
-    @thumbnail.rows.should >= 300
-    @thumbnail.columns.should >= 400
   end
 end
