@@ -31,6 +31,24 @@ describe Thumbnail do
       @thumbnail.write
       existing.should_not eq File.stat(@filename)
     end
+
+    describe 'subdirs' do
+      before do
+        @container = File.join("public", "thumbs")
+        FileUtils.rm_rf(@container)
+      end
+
+      it 'should create the thumbs container dir' do
+        @thumbnail.write
+        File.should exist(@container)
+      end
+
+      it 'to a subdirectory of the first two characters of the id' do
+        @thumbnail.write
+        File.should exist(File.join(@container, "D8"))
+      end
+
+    end
   end
 
   describe "#images" do

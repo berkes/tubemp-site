@@ -21,7 +21,7 @@ class Thumbnail
     end
 
     extra_parts = [suffix] unless suffix.nil?
-    final.write(File.join("public", "thumbs", filename))
+    final.write(container_dir.join(filename))
     #it should be easier and cleaner with flatten: however: no idea how to CenterGravity that
     # see http://stackoverflow.com/questions/15724387/how-to-flatten-rmagick-images-and-center-them
     #@images.flatten_images.write(File.join("public", "thumbs", parts.join("_") + ".png"))
@@ -39,5 +39,21 @@ class Thumbnail
   private
   def filename
     @filename_parts.join("_") + ".png"
+  end
+
+  def root
+    path = Pathname.new(File.join("public", "thumbs"))
+
+    FileUtils.mkdir_p(path) unless File.exists?(path)
+
+    path
+  end
+
+  def container_dir
+    path = root.join(@id.slice(0,2))
+
+    FileUtils.mkdir_p(path) unless File.exists?(path)
+
+    path
   end
 end
