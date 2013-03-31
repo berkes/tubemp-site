@@ -3,11 +3,10 @@ require 'video_info'
 require 'net/http'
 
 class YouTube
-  def initialize identifier, opts = {}
+  def initialize identifier
     @id = find_id(identifier)
 
     @meta = nil
-    @base_url = opts[:base_url] || ''
   end
 
   def title
@@ -19,9 +18,14 @@ class YouTube
     "http://www.youtube.com/watch?v=#{@id}"
   end
 
-  def tags
+  def tags(uri)
     parse
-    Hash[get_thumbs.map {|key,value| [key, %Q{<a href="#{href}"><img src="#{value}" alt="#{title}"/></a>}] }]
+
+    thumbs = get_thumbs.map do |key,thumb|
+      uri.path = thumb.uri_path
+      [key, %Q{<a href="#{href}"><img src="#{uri}" alt="#{title}"/></a>}]
+    end
+    Hash[thumbs]
   end
 
   def valid?
@@ -55,46 +59,20 @@ class YouTube
 
   def get_thumbs
     img = Net::HTTP.get(URI(@meta.thumbnail_large))
-
     tmpfile = Tempfile.new(["tubemp", ".jpg"])
+
+    thumbs = {}
     begin
       tmpfile.binmode
       tmpfile.write(img)
       tmpfile.close
 
-      images = Magick::ImageList.new(tmpfile.path, File.join("assets", "overlay.png"))
-
-      # Write a png as thumbnail
-      images[0].write(thumbname)
-      # And glue the overlay to it, save that as an alternative PNG
-      images[0].composite(images[1], Magick::CenterGravity, Magick::OverCompositeOp).write(thumbname({:overlay => true}))
+      thumbs["basic"]   = Thumbnail.new(id, tmpfile).write
+      thumbs["overlay"] = Thumbnail.new(id, tmpfile).add_overlay(File.join("assets","overlay.png")).write(@uri)
     ensure
       images = nil
       tmpfile.unlink
     end
-
-    {
-     "basic" => thumbname({:overlay => false, :absolute => true}),
-     "overlay" => thumbname({:overlay => true, :absolute  => true})
-    }
-  end
-
-  # Creates a path to the thumbnail
-  # opts: 
-  #  * `:overlay => true`, appends _overlay to the imagename
-  #  * `:omit_public => true`, does not include the /public/ part of the path,
-  #                            for static-file serving
-  def thumbname opts = {}
-    FileUtils.mkdir_p(File.join("public", "thumbs"))
-
-    filename = opts[:overlay] ? "#{@id}_overlay": @id
-    parts = ["thumbs", "#{filename}.png"]
-
-    if opts[:absolute]
-      parts.unshift(@base_url)
-    else
-      parts.unshift("public")
-    end
-    File.join(parts)
+    thumbs
   end
 end
