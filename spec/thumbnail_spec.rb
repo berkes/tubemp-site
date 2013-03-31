@@ -24,6 +24,13 @@ describe Thumbnail do
     it 'should be chainable' do
       @thumbnail.write.should be_kind_of(Thumbnail)
     end
+
+    it 'should overwrite existing files' do
+      FileUtils.cp(root_path.join("spec", "fixtures", "thumb.jpg"), @filename)
+      existing = File.stat(@filename)
+      @thumbnail.write
+      existing.should_not eq File.stat(@filename)
+    end
   end
 
   describe "#images" do
@@ -62,18 +69,4 @@ describe Thumbnail do
       @thumbnail.uri_path.should eq "/thumbs/#{@id}.png"
     end
   end
-
-  context 'Image exists' do
-    before do
-      FileUtils.cp(root_path.join("spec", "fixtures", "thumb.jpg"), @filename)
-      @existing = File.stat(@filename)
-    end
-
-    it 'should overwrite when a newer image is found online' do
-      pending "implement"
-      @yt.tags(@uri)
-      @existing.should_not eq File.stat(@filename)
-    end
-  end
-
 end
