@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'json'
-require File.join(File.dirname(__FILE__), 'lib', 'youtube')
-require File.join(File.dirname(__FILE__), 'lib', 'thumbnail')
+require File.join(File.expand_path(File.dirname(__FILE__)), 'youtube')
+require File.join(File.expand_path(File.dirname(__FILE__)), 'thumbnail')
 include ERB::Util
 
 # when using from Rackup
