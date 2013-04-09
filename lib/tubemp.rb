@@ -5,9 +5,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), 'thumbnail')
 include ERB::Util
 
 class Tubemp < Sinatra::Application
-  # when using from Rackup
-  enable :inline_templates
-
+  set :views, File.join(File.dirname(__FILE__), "views")
   get '/tags.?:format?' do
     yt  = YouTube.new params[:v]
     uri = URI(request.base_url)
