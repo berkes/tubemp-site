@@ -44,7 +44,7 @@ class Thumbnail
   end
 
   def root
-    path = Pathname.new(File.join("public", "thumbs"))
+    path = Pathname.new(File.join(File.dirname(__FILE__), "public", "thumbs"))
 
     FileUtils.mkdir_p(path) unless File.exists?(path)
 

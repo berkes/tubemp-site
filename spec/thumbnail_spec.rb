@@ -6,7 +6,7 @@ describe Thumbnail do
   before do
     @id = "D80QdsFWdcQ"
     @slice = @id.slice(0,2)
-    @container = File.join("public", "thumbs", @slice)
+    @container = File.join("lib", "public", "thumbs", @slice)
     @filename = File.join(@container, "#{@id}.png")
     @tmpfile    = File.open(File.join(File.dirname(__FILE__), "fixtures", "thumb.jpg"))
     @thumbnail = Thumbnail.new(@id, @tmpfile)
@@ -37,7 +37,7 @@ describe Thumbnail do
 
     describe 'subdirs' do
       before do
-        @container = File.join("public", "thumbs")
+        @container = File.join("lib", "public", "thumbs")
         FileUtils.rm_rf(@container)
       end
 
