@@ -24,6 +24,20 @@ This tiny application aids in that.
 * Bookmarkable: tubemp.example.com/tags?v=D80QdsFWdcQ
 * JSON API: tubemp.example.com/tags.json?v=D80QdsFWdcQ
 
+# Demo and examples
+
+A demo installation can be found at http://tubemp.webschuur.com. NOTE
+that this is a demo; images will be wiped; when you include them from
+this service on your website, you will see broken images on your website at some point.
+
+A hosted version is being developed and will replace the demo.
+
+![Example](http://i.imgur.com/SI4zMrF.png)
+
+Example code:
+
+`<a href="http://www.youtube.com/watch?v=D80QdsFWdcQ"><img src="http://tubemp.webschuur.com/thumbs/D8/D80QdsFWdcQ_overlay.png" alt="Tony Tribe , Red Red Wine"/></a>`
+
 ## Installation
 
 ### The quick way
