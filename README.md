@@ -28,14 +28,9 @@ This tiny application aids in that.
 
 ### The quick way
 
-1. `git clone https://github.com/berkes/tubemp.git`
-1. `cd tubemp`
-1. `bundle install`
-1. `ruby tubemp.rb`
+1. `$ gem install tubemp`
+1. `$ tubemp`
 1. Open a browser and visit localhost:4567
-
-In some near future, this project will be made into a gem, which
-simplifies the installation and running greatly.
 
 ### The long way (nginx and passenger)
 
@@ -70,7 +65,7 @@ Bundler installs everything, but for reference:
 * rspec for testing and development
 
 ## TODOS
-* Write installation instructions.
-* Make a gem into this, allowing a simple `gem install tubemp && tubemp`
-  to run your own server.
-* Make a wordpress and Drupal module, using that API.
+* Write installation instructions for nginx
+* Make a wordpress and Drupal module, using the JSON API.
+* Make the gem mountable; current gem is a hack and e.g. stores the
+  cached images in the gem-dir.
