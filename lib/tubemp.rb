@@ -1,7 +1,10 @@
 require 'sinatra'
+require 'pathname'
 require 'json'
-require File.join(File.expand_path(File.dirname(__FILE__)), 'youtube')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'thumbnail')
+
+require 'youtube.rb'
+require 'thumbnail.rb'
+
 include ERB::Util
 
 class Tubemp < Sinatra::Application
