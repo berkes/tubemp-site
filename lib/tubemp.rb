@@ -5,7 +5,10 @@ require File.join(File.expand_path(File.dirname(__FILE__)), 'thumbnail')
 include ERB::Util
 
 class Tubemp < Sinatra::Application
-  set :views, File.join(File.dirname(__FILE__), "views")
+  this_dir = Pathname.new(File.dirname(__FILE__))
+  set :views,  this_dir.join("views")
+  set :public_folder, this_dir.join("public")
+
   get '/tags.?:format?' do
     yt  = YouTube.new params[:v]
     uri = URI(request.base_url)
