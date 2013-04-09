@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'tubemp.rb')
 
 module RSpecMixin
   include Rack::Test::Methods
-  def app() Sinatra::Application end
+  def app() Tubemp end
 
   def root_path()
     Pathname.new(File.realpath(File.join(File.dirname(__FILE__), '..')))
