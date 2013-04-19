@@ -1,7 +1,7 @@
 require 'bundler/capistrano'
 
 set :application, "ET_tubemp"
-set :repository,  "git@github.com:berkes/tubemp.git"
+set :repository,  "git@github.com:berkes/tubemp-site.git"
 set :deploy_to, "/var/www/#{application}"
 
 # set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
