@@ -39,4 +39,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  capistrano
   tubemp
