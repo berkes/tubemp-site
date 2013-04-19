@@ -1,4 +1,8 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-gemspec
+gem 'tubemp'
+
+group :test do
+  gem 'capistrano'
+end
