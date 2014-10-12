@@ -3,6 +3,8 @@ source "https://rubygems.org"
 
 gem 'tubemp'
 
-group :test do
+group :development do
   gem 'capistrano'
+  gem 'capistrano-bundler', '~> 1.1', require: false
 end
+
