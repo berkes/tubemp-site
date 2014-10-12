@@ -1,30 +1,49 @@
-require 'bundler/capistrano'
+# config valid only for Capistrano 3.1
+lock '3.2.1'
 
-set :application, "ET_tubemp"
-set :repository,  "git@github.com:berkes/tubemp-site.git"
-set :deploy_to, "/var/www/#{application}"
+set :application, 'ET_tubemp'
+set :repo_url, 'git@github.com:berkes/tubemp-site.git'
 
-# set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, '/u/apps/ET_tubemp'
 
-role :web, "li308-140.members.linode.com" # Your HTTP server, Apache/etc
-role :app, "li308-140.members.linode.com" # This may be the same as your `Web` server
-# Gnome-terminal or Ubuntu or whatever trows errors. No idea what 
-# this does, but it fixes the issue. :D
-default_run_options[:pty] = true
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-# Agent forwarding: use my local priv ssh keys for access to github.
-ssh_options[:forward_agent] = true
+# Default value for :pty is false
+set :pty, true
 
-set :shared_children, shared_children + %w{public/thumbs} #Add uploads to be shared. 
+# Default value for :linked_files is []
+# set :linked_files, %w{config/database.yml}
 
-# If you are using Passenger mod_rails uncomment this:
-# namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
+# Default value for linked_dirs is []
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets public/thumbs}
 
+# Default value for default_env is {}
+set :default_env, { path: "/opt/rbenv/shims:$PATH" }
 
+# Default value for keep_releases is 5
+set :keep_releases, 5
+
+namespace :deploy do
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      # execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
+  end
+
+end
