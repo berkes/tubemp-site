@@ -25,7 +25,7 @@ GEM
       rack
     raindrops (0.13.0)
     rake (10.3.2)
-    rmagick (2.13.3)
+    rmagick (2.13.4)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
